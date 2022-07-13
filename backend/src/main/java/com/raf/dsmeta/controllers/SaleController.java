@@ -5,6 +5,8 @@ import com.raf.dsmeta.services.SaleService;
 import com.raf.dsmeta.services.SmsService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,10 +22,10 @@ public class SaleController {
     }
 
     @GetMapping
-    public Page<Sale> findSales(@RequestParam(value="minDate", defaultValue = "") String minDate,
-                                @RequestParam(value="maxDate", defaultValue = "") String maxDate,
-                                Pageable pageable){
-        return saleService.findSales(minDate, maxDate, pageable);
+    public ResponseEntity<Page<Sale>> findSales(@RequestParam(value="minDate", defaultValue = "") String minDate,
+                                               @RequestParam(value="maxDate", defaultValue = "") String maxDate,
+                                               Pageable pageable){
+        return new ResponseEntity<>(saleService.findSales(minDate, maxDate, pageable), HttpStatus.OK);
     }
     @GetMapping("/{id}/notification")
     public void notifySms(@PathVariable Long id){
